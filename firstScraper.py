@@ -1,9 +1,11 @@
+# This Python file uses the following encoding: utf-8
+
 import json
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-f = open("recipeIngredients", "w")
+f = open("recipeIngredients.txt", "w")
 
 from bs4 import BeautifulSoup
 
@@ -26,10 +28,13 @@ for i in range(2,10):
 			req = requests.get(link)
 			recipeData = req.text
 			recipePage = BeautifulSoup(recipeData)
-			name = recipePage.find(id="lblIngName")
-			while name != None:
-				print(name.string)
-				name = recipePage.find_next("span", id="lblIngName")
+			names = recipePage.find_all("span", "ingredient-name")
+			for name in names:
+				if name.string != "" and name.string != " ":
+					split = name.string.split(",")
+					f.write(split[0]+"\n")
+					print(split[0])
+				names = recipePage.find_next("span", "ingredient-name")
 
 		divs = divs.find_next("div", "hub-list-view")
 
