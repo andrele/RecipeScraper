@@ -7,7 +7,7 @@ import simplejson as json
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-f = open("recipeIngredients.json", "a")
+f = open("recipeIngredients_mainDish.json", "a")
 
 from bs4 import BeautifulSoup
 
@@ -16,7 +16,7 @@ import requests
 for i in range(2,200):
 	print("Page: " + str(i))
 	# url = "allrecipes.com/recipes/breakfast-and-brunch/main.aspx?evt19=1&Page="+str(i)+"&vm=l&p34=HR_ListView#recipes"
-	url = "http://allrecipes.com/recipes/main-dish/main.aspx?evt19=1&Page="+str(i)+"&vm=l&p34=HR_ListView#recipes"
+	url = "allrecipes.com/recipes/main-dish/main.aspx?evt19=1&Page="+str(i)+"&vm=l&p34=HR_ListView#recipes"
 	r = requests.get("http://" +url)
 	data = r.text
 	soup = BeautifulSoup(data)
