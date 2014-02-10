@@ -2,6 +2,11 @@
 
 import json
 import sys
+import time
+import nltk
+
+from nltk.tokenize import word_tokenize
+
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
@@ -23,17 +28,27 @@ for i in range(2,10):
 	while divs != None:
 		header = divs.find("h3", "resultTitle")
 		if header != None:
+			# Recipe Link
 			link = header.a["href"]
 			print(link)
 			req = requests.get(link)
 			recipeData = req.text
 			recipePage = BeautifulSoup(recipeData)
+			# Start scraping recipe page here
+			title = recipePage.find("h1", id = "itemTitle")
+			print(title.string)
+			photo = recipePage.find("img", id = "imgPhoto")
+			print(photo.get("src"))
 			names = recipePage.find_all("span", "ingredient-name")
 			for name in names:
 				if name.string != "" and name.string != " ":
 					split = name.string.split(",")
-					f.write(split[0]+"\n")
-					print(split[0])
+					ingredients = split[0]
+					# tokens = nltk.word_tokenize(ingredients)
+					# print(tokens)
+					# tagged = nltk.pos_tag(tokens)
+					# f.write(ingredients+"\n")
+					print(ingredients)
 				names = recipePage.find_next("span", "ingredient-name")
 
 		divs = divs.find_next("div", "hub-list-view")
