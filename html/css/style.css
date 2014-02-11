@@ -1,7 +1,16 @@
-.bar {
-	display: inline-block;
-	width: 20px;
-	height: 75px;
-	background-color: teal;
-	margin-right: 2px;
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: auto;
+  position: relative;
+  width: 960px;
+}
+
+text {
+  font: 10px sans-serif;
+}
+
+form {
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }

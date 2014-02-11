@@ -7,7 +7,7 @@ import simplejson as json
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-f = open("recipeIngredients_mainDish.json", "a")
+f = open("recipeIngredients_new.json", "a")
 
 from bs4 import BeautifulSoup
 
@@ -16,7 +16,8 @@ import requests
 for i in range(2,200):
 	print("Page: " + str(i))
 	# url = "allrecipes.com/recipes/breakfast-and-brunch/main.aspx?evt19=1&Page="+str(i)+"&vm=l&p34=HR_ListView#recipes"
-	url = "allrecipes.com/recipes/main-dish/main.aspx?evt19=1&Page="+str(i)+"&vm=l&p34=HR_ListView#recipes"
+	# url = "allrecipes.com/recipes/main-dish/main.aspx?evt19=1&Page="+str(i)+"&vm=l&p34=HR_ListView#recipes"
+	url = "allrecipes.com/Recipes/World-Cuisine/Main.aspx?evt19=1&vm=l&p34=HR_ListView&Page="+str(i)
 	r = requests.get("http://" +url)
 	data = r.text
 	soup = BeautifulSoup(data)
@@ -34,9 +35,12 @@ for i in range(2,200):
 			recipeData = req.text
 			recipePage = BeautifulSoup(recipeData)
 			# Start scraping recipe page here
+			recipeId = recipePage.find("div", id = "zoneRecipe")
+			uid = recipeId.get("data-typespecificid")
+			recipe["uid"] = uid
 			title = recipePage.find("h1", id = "itemTitle")
 			recipe["name"] = title.string
-			print("\n\n" + title.string)
+			print("\n\n" + title.string + "[" + uid + "]")
 			print(link)
 			photo = recipePage.find("img", id = "imgPhoto")
 			recipe["photo"] = photo.get("src")

@@ -55,43 +55,59 @@
 
 			var w = 800,
 				h = 600,
-				barPadding = 1;
+				barPadding = 1,
+				radius = Math.min(w, h)/2;
+
+			var	color = d3.scale.category20();
+
+			var pie = d3.layout.pie()
+				.sort(null);
+
+			var arc = d3.svg.arc()
+			    .innerRadius(radius - 100)
+			    .outerRadius(radius - 50);
 
 			var svg = d3.select("body")
 				.append("svg")
 				.attr("width", w)
 				.attr("height", h)
 				.append("g")
-					.attr("transform", "translate(50,50)");
+					.attr("transform", "translate("+w/2+","+h/2+")");
 
-			var pack = d3.layout.pack()
-				.size([w, h - 50])
-				.padding(10);
+			var path = svg.selectAll("path")
+				.data(pie(ingredientData()))
+				.enter().append("path")
+				.attr("fill", function(d, i) { return color(i); })
+				.attr("d", arc);
+
+			// var pack = d3.layout.pack()
+			// 	.size([w, h - 50])
+			// 	.padding(10);
 
     		var fileData = d3.json("recipeIngredients_bacon.json", function(data){
 				recipes = data;
 				console.log("Importing " + data);
 				reSort();
 				console.log("Done populating ingredients");
-				newData = ingredientData();
 
-				var nodes = pack.nodes(newData);
+				// var nodes = pack.nodes(newData);
 
-				var node = svg.selectAll(".node")
-					.data(nodes)
-					.enter()
-					.append("g")
-						.attr("class", "node")
-						.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
+				// var node = svg.selectAll(".node")
+				// 	.data(nodes)
+				// 	.enter()
+				// 	.append("g")
+				// 		.attr("class", "node")
+				// 		.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
 
-					node.append("circle")
-						.attr("r", function (d)  { return d.r; })
-						.attr("fill", "steelblue")
-						.attr("opacity", 0.25)
-						.attr("stroke", "#ADADAD")
-						.attr("stroke-width", "2");
+				// 	node.append("circle")
+				// 		.attr("r", function (d)  { return d.r; })
+				// 		.attr("fill", "steelblue")
+				// 		.attr("opacity", 0.25)
+				// 		.attr("stroke", "#ADADAD")
+				// 		.attr("stroke-width", "2");
 
 			});
+
 
 
 
